@@ -1,0 +1,86 @@
+---
+title: "Flight delays"
+output: html_document
+runtime: shiny
+---
+  
+```{r echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(flights2)
+```
+
+```{r echo=FALSE}
+selectInput("origin", "Select Origin:", 
+            choices = sort(unique(flights2$origin)),
+            selected = "JFK")
+
+selectInput("dest", "Select Destination:",
+            choices = sort(unique(flights2$dest)),
+            selected = "BOS")
+```
+
+```{r echo=FALSE, message=FALSE}
+trip <- reactive({
+  flights2 %>%
+    filter(origin == input$origin, dest == input$dest)
+})
+
+hour_avgs <- reactive({
+  trip() %>% 
+    group_by(hour) %>% 
+    summarise(avg_delay = round(mean(arr_delay), 2))
+})
+
+hour <- reactive({
+  smallest <- hour_avgs()$hour[which.min(hour_avgs()$avg_delay)]
+  paste0(smallest %% 12, ifelse(smallest %/% 12, ":00 pm", ":00 am"))
+})
+```
+
+
+# Goal
+
+What is the best time to fly from `r renderText({input$origin})` airport to `r renderText({input$dest})`?
+
+# Motivation
+
+Flight delays are one of the most frustrating aspects of airline travel (well, one of many). Travellers can do little to avoid flight delays; travellers usually cannot choose where they need to travel to, or where they need to travel from. However, travelers can choose _when_ they travel.
+
+This study will examine the correlation between _departure time_, the time a flight is scheduled to depart, and _arrival delay_, the amount of time that passes between when a plane is scheduled to arrive and when it actually arrives. Travelers can use this information to mitigate the expected delay associated with their flight.
+
+# Data
+
+We will examine all flights that originated from a New York City airport in 2013. The data is provided by the Bureau of Transportation Statistics (BTS) and is available for download from <http://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236>.
+
+# Results
+
+The table below lists the mean arrival delay by hour.
+
+```{r echo=FALSE}
+renderTable({
+  hour_avgs()
+})
+```
+
+The expected delay fluctuates throughout the day. Here the delay is described by a smooth curve fitted to the data.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+renderPlot({
+  qplot(clock, arr_delay, data = trip(), geom = "smooth") +
+    xlab("Scheduled departure time") +
+    ylab("Expected arrival delay (m)")
+})
+```
+
+# Conclusion
+
+The best time to fly from `r renderText({input$origin})` airport to `r renderText({input$dest})` is the hour immediately after **`r renderText({hour()})`**.
+
+# A. Raw Data
+
+```{r echo=FALSE, message = FALSE}
+library(DT)
+renderDataTable({trip()})
+```
+
