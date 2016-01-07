@@ -1,83 +1,105 @@
 library(shiny)
 library(ggplot2)
+library(tidyr)
 library(shinydashboard)
 
+# Input parameters (assumptions)
+parms<-list(
+  mem =             c(small = 0.50, medium = 5, large = 35),
+  memMultiplier =   c(small = 5, medium = 4, large = 3),
+  cpu =             c(small = 0.25, medium = 1, large = 4),
+  cpuMultiplier =   c(small = 2, medium = 3, large = 4),
+  hyperMultiplier = c(small = 0.75, medium = 0.75, large = 0.75),
+  nodeMem =         c(micro = 16, small = 64, medium = 256, large = 512),
+  nodeCPU =         c(micro = 2, small = 8, medium = 16, large = 32),
+  nodeNames =       c("Micro", "Small", "Medium", "Large")
+)
+
+# Helper function: calculate number of instances based on inputs
+calculateNodes <- function(x, vec) x %/% vec + (x %% vec > 0)
+
 ui <- dashboardPage(
-  title = "Calculator",
+
+  title = "RStudio - Calc",
+  
   dashboardHeader(
     title = "R Instance Calculator", titleWidth = "300px"
   ),
+  
   dashboardSidebar(
-    width = "300px",
-    h3('1. Sessions'),
-    p('How many active sessions do you need to support?'),
-    numericInput("volume", NULL, 7, 1, 500),
-    h3('2. Memory'),
-    p('What is the percentage of small/medium/large sessions in terms of memory?'),
-    sliderInput("memory",NULL, 0, 100, c(50,85), ticks = FALSE),
-    plotOutput("distPlot",height="50px"),
-    h3('3. Compute'),
+    
+    h3("1. Sessions"),
+    p("How many active sessions do you need to support?"),
+    numericInput("volume", NULL, 15, 1, 500),
+    
+    h3("2. Memory"),
+    p("What is the percentage of small/medium/large sessions in terms of memory?"),
+    sliderInput("memory", NULL, 0, 100, c(50, 85), ticks = FALSE),
+    plotOutput("distPlot",height = "50px"),
+    
+    h3("3. Compute"),
     checkboxInput("compute","Do individual sessions use multiple cores?", FALSE),
     checkboxInput("hyper","Are you using hyper-threading?", FALSE),
-    h3('4. Custom instance sizes'),
+    
+    h3("4. High Availability"),
+    p("What is your standard for high availability?"),
+    sliderInput("ha", NULL, 0, 99, 50, ticks = FALSE),
+
+    h3("5. Custom instance sizes"),
     checkboxInput("custom","Do you want to use a custom instance size?", FALSE),
     conditionalPanel(
       condition = "input.custom == true",
       numericInput("customMem", "Memory (GB)", 128, 2, 2048),
       numericInput("customCPU", "Compute (Cores)", 8 ,1, 64)
     ),
+    
     br(),
-    hr(),
-    p('Copyright RStudio')
+    p("Copyright RStudio"),
+    width = "300px"
+    
   ),
+  
   dashboardBody(
-    strong("Instructions"),
+    
+    p(strong("Instructions")),
     p("Estimate the amount of memory, cores, and instances that will be needed to 
       support your organization. Input the number of active sessions, the memory
-      profile of sessions, and compute requirements."),
-    fluidRow(
+      profile of sessions, and compute and high availability requirements."),
+
+    fluidRow(widht = 12,
       valueBoxOutput("memoryReq", 6),
       valueBoxOutput("cpuReq", 6)
     ),
+    
     fluidRow(
       box(
         width = 12, height = "300px", solidHeader = TRUE, status="primary",
-        h3('Number of Instances Required', align='center'),
+        h3("Number of Instances Required", align="center"),
         plotOutput("nodePlot")
       )
     ),
+    
     fluidRow(
       box(
-        width = 12, status = 'primary', align="center",
+        width = 12, status = "primary", align="center",
         h3("Detail of Instances", align = "center"),
         tableOutput("nodeFits")
       )
+    ),
+    
+    p(strong("Disclaimer")),
+    p("This calculator provides generalized estimates and cannot account for all
+      aspects of your particular environment, use cases, and/or requirements.
+      Estimates are calculated using assumptions that may or may not apply to your
+      situation.")
     )
-    )
+  
 )
 
 server <- shinyServer(function(input, output, session) {
 
   ##############################################
-  ### Inputs and functions
-  ##############################################
-  
-  # Calculate number of instances based on inputs
-  calculateNodes <- function(x,vec) x%/%vec + (x%%vec > 0)
-  
-  # Input parameters
-  parms<-list(memMultiplier=4,
-              cpuMultiplier=2,
-              hyperMultiplier=0.75,
-              mem=c(small=0.50, med=5, large=30),
-              cpu=c(small=0.25, med=1, large=2),
-              nodeMem=c(micro=16, small=64, medium=256, large=512),
-              nodeCPU=c(micro=2, small=8, medium=16, large=32),
-              nodeNames=c("Micro", "Small", "Medium", "Large")
-  )
-
-  ##############################################
-  ### Output memory distribution
+  ### Output memory distribution for sidebar
   ##############################################
   
   # Plot memory distribution for sidebar
@@ -106,14 +128,14 @@ server <- shinyServer(function(input, output, session) {
   
   # Estimate memory
   memory <- reactive({
-    lam <- parms$mem * parms$memMult
+    lam <- parms$mem * parms$memMultiplier
     mu <- sum(profile() * lam)
     round(mu * input$volume)
   })
   
   # Output memory estimate
   output$memoryReq <- renderValueBox({
-    valueBox(paste(memory(), 'GB'), "Memory", icon("flash", lib = "glyphicon"))
+    valueBox(paste(memory(), "GB"), "Memory", icon("flash", lib = "glyphicon"))
   })
   
   # Estimate number of cores
@@ -127,20 +149,20 @@ server <- shinyServer(function(input, output, session) {
   
   # Output number of cores
   output$cpuReq <- renderValueBox({
-    valueBox(paste(compute(), 'Cores'), "Cores", icon("th", lib = "glyphicon"))
+    valueBox(paste(compute(), "Cores"), "Cores", icon("th", lib = "glyphicon"))
   })
 
   ##############################################
   ### Estimate number of instances required
   ##############################################
   
-  # Organize instance sizes
+  # Add custom instance sizes
   nodeParms <- reactive({
     nodeNames <- parms$nodeNames
     nodeMem <- parms$nodeMem 
     nodeCPU <- parms$nodeCPU
     if(input$custom) {
-      nodeNames <- c(nodeNames, custom = 'Custom')
+      nodeNames <- c(nodeNames, custom = "Custom")
       nodeMem <- c(nodeMem, custom = input$customMem) 
       nodeCPU <- c(nodeCPU, custom = input$customCPU)
     }
@@ -149,31 +171,40 @@ server <- shinyServer(function(input, output, session) {
   
   # Estimate instance sizes based on memory and cores
   nodeFits <- reactive({
-    mem <- calculateNodes(memory(), nodeParms()[['nodeMem']])
-    cpu <- calculateNodes(compute(), nodeParms()[['nodeCPU']])
-    setNames(pmax(mem, cpu), nodeParms()[['nodeNames']])
+    nodeparms <- nodeParms()
+    mem <- calculateNodes(memory(), nodeparms[["nodeMem"]])
+    cpu <- calculateNodes(compute(), nodeparms[["nodeCPU"]])
+    instances <- pmax(mem, cpu)
+    hainstances <- ceiling(instances * input$ha / 100)
+    data.frame(
+      Type = nodeparms[["nodeNames"]],
+      Memory = nodeparms[["nodeMem"]],
+      Cores = nodeparms[["nodeCPU"]],
+      HA = hainstances,
+      StandAlone = instances,
+      Total = hainstances + instances)
   })
   
   # Plot instances
   output$nodePlot <- renderPlot({
-    dat <- data.frame(nodeNames = names(nodeFits()), nodeSizes = nodeFits())
-    ggplot(dat, aes(reorder(nodeNames, length(nodeNames):1), nodeSizes)) + 
-      geom_bar(stat='identity', fill='goldenrod') + 
-      geom_hline(yintercept = 0:max(dat$nodeSizes), color = 'white') +
+    dat <- gather(nodeFits(), Instances, instances, HA, StandAlone)
+    maxInstances <- max(dat$Total)
+    ggplot(dat, aes(reorder(Type, length(Type) : 1), instances, fill = Instances)) + 
+      geom_bar(stat="identity") +
+      coord_flip() +
+      scale_fill_manual(values=c("chartreuse4", "goldenrod")) +
+      geom_hline(yintercept = 0:maxInstances, color = "white") +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
             panel.background = element_blank()) +
-      coord_flip() + 
       xlab("") + ylab("")
-  }, height = 200)
+    }, height = 200)
   
   # Output table of instances
   output$nodeFits <- renderTable({
-    data.frame(
-      Type = nodeParms()[['nodeNames']],
-      Memory = nodeParms()[['nodeMem']], 
-      Cores = nodeParms()[['nodeCPU']],
-      Instances = nodeFits())
-  }, display = c('s', 's', 'd', 'd', 'd'), include.rownames = FALSE)
+    nodeFits()
+    }, 
+    display = c("s", "s", "d", "d", "d", "d", "d"), 
+    include.rownames = FALSE)
   
 })
 
