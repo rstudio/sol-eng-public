@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+          {{ headContent() }}
+
+  <meta charset="utf-8">
+  <title>RStudio | Tech Company</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+	
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Fav and touch icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="img/favicon.png">
+  
+
+
+    <!-- SCRIPT 
+    ============================================================-->  
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+
+  <!--HEADER ROW-->
+  <div id="header-row">
+    <div class="container">
+      <div class="row">
+              <!--LOGO-->
+              <div class="span3"><a class="brand" href="#"><img src="img/initech-blue.png"/></a></div>
+              <!-- /LOGO -->
+
+            <!-- MAIN NAVIGATION -->  
+              <div class="span9">
+                <div class="navbar  pull-right">
+                  <div class="navbar-inner">
+                    <a data-target=".navbar-responsive-collapse" data-toggle="collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>
+                    <div class="nav-collapse collapse navbar-responsive-collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        
+                        
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                 
+                    </ul>
+                  </div>
+
+                  </div>
+                </div>
+              </div>
+            <!-- MAIN NAVIGATION -->  
+      </div>
+    </div>
+  </div>
+  <!-- /HEADER ROW -->
+
+
+
+
+
+
+<div class="container">
+
+  <!--PAGE TITLE-->
+
+
+  <!-- /. PAGE TITLE-->
+  	<div class="row">
+		<div class="span2">
+		</div>
+		<div class="span8">
+			<h2>Insert your dashboard into an HTML template. </h2>
+			<p>
+			  You can use <i>reactiveFileReader</i> and <i>HTML templates</i> to build automatically updating dashboards that match your organization's online content. All you need to do is add <b>&#123;&#123;&nbsp;headContent() &#125;&#125;&nbsp;</b> to the header and insert your Shiny output into the body with <b>&#123;&#123;&nbsp;myShinyOutput&nbsp;&#125;&#125;</b> R code blocks. Your dashboards will take advantage of any CSS formatting that are part of the template.
+			</p>
+
+		</div>
+		<div class="span2"></div>
+	</div>
+
+	<div style="padding-top: 50px;">
+		<div class="row" >
+			<div class="span12", align="center">
+		
+      {{ calendar }}
+      {{ checkBox }}
+      {{ slider }}
+		  {{ plot }}
+		  {{ data }}
+
+
+			</div> 
+		</div>
+	</div>
+	 <div class="hr-divider"></div>
+
+	<div class="row">
+		<div class="span12">
+
+		<h2>Our Team</h2>
+			<ul class="thumbnails">
+				<li class="span4">
+					<div class="thumbnail">
+						<img alt="" src="img/team1.jpg" />
+						<div class="caption">
+							<strong>DERRICK JEFFERSON</strong> / 
+							FOUNDER
+							<p>
+								Derrick started IniTech to solve challenging problems that are common to industry. He has been building software for 15 years. He holds advanced degrees in business and psychology.
+							</p>
+							<p>
+
+							</p>
+						</div>
+					</div>
+				</li>
+				<li class="span4">
+					<div class="thumbnail">
+						<img alt="300x200" src="img/team2.jpg" />
+						<div class="caption">
+							<strong>ENJAMIN GARRETT</strong> / 
+							CHIEF SCIENTIST
+							<p>
+								Enjamin has worked in applied analytics for some of the industry's most inovative companies. He is an avid contributor to the community. He holds degrees in mathematics and economics.
+							</p>
+							<p>
+								
+							</p>
+						</div>
+					</div>
+				</li>
+				<li class="span4">
+					<div class="thumbnail">
+						<img alt="300x200" src="img/team3.jpg" />
+						<div class="caption">
+							<strong>DASIA KATELYN</strong> / 
+							VP MARKETING
+							<p>
+								Dasia has a long track record of putting new companies on the map. His background is in digital advertising and on-line marketing. He has 20 years experience in the industry.
+							</p>
+							<p>
+								
+							</p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+</div>
+
+
+<!--Footer
+==========================-->
+
+<footer>
+    <div class="container">
+      <div class="row">
+        <div class="span6">Copyright &copy 2016 IniTech | All Rights Reserved  <br>
+        <small>IniTech is part of Veridian Dynamics.</small>
+        </div>
+        <div class="span6">
+            <div class="social pull-right">
+                <a href="#"><img src="img/social/googleplus.png" alt=""></a>
+                <a href="#"><img src="img/social/dribbble.png" alt=""></a>
+                <a href="#"><img src="img/social/twitter.png" alt=""></a>
+                <a href="#"><img src="img/social/dribbble.png" alt=""></a>
+                <a href="#"><img src="img/social/rss.png" alt=""></a>
+            </div>
+        </div>
+      </div>
+    </div>
+</footer>
+
+<!--/.Footer-->
+
+</body>
+</html>

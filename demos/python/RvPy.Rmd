@@ -1,0 +1,28 @@
+---
+title: "PCA Analysis"
+output: html_document
+---
+
+Comparing pricipal component analysis in R and Python.
+
+## R
+
+```{r}
+data(iris)
+iris.data <- iris[, 1:4]
+pca <- princomp(iris.data)
+scores <- pca$scores[, 1:2]
+scores[1:6, ]
+```
+
+## Python
+
+```{python}
+from sklearn import decomposition, datasets
+iris = datasets.load_iris()
+pca = decomposition.PCA(n_components=2)
+pca.fit(iris.data)
+scores = pca.transform(iris.data)
+print scores[0:6, ]
+```
+

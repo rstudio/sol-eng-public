@@ -1,0 +1,9 @@
+
+MYDIR=/home/nathan/ShinyApps/serverLoad/data
+MYFILE=severLoad.sh
+MYLOG=serverLoad.log
+
+* * * * * $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 15; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 30; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 45; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
