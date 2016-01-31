@@ -42,7 +42,7 @@ ui <- dashboardPage(
               sliderInput(
                 inputId = "ma_adjust",
                 label = "Moving average adjustment",
-                 min = 1, max = 100, value = 15, step = 1.0)
+                 min = 1, max = 100, value = 5, step = 1.0)
               )
             )
           )
@@ -92,7 +92,7 @@ server <- function(input, output, session) {
   
   output$plot <- renderPlot({
     p1 <- ggplot(plotData(), aes(x=Date, xend=Date, y=0, yend=Load)) + 
-      geom_segment(color='darkblue', alpha = 0.05) +
+      geom_segment(color='darkblue', alpha = 0.25) +
       xlab("") + 
       ylab("Log10 Load") + 
       scale_y_log10()

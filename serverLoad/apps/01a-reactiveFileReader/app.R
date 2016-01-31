@@ -30,7 +30,7 @@ server <- function(input, output, session) {
   
   output$plot <- renderPlot({
     ggplot(allData(), aes(x=Date, xend=Date, y=0, yend=Load)) + 
-      geom_segment(color='darkblue', alpha = 0.75) +
+    geom_segment(color='darkblue', alpha = 0.75) +
       xlab("") + 
       ylab("Log10 Load") + 
       scale_y_log10()

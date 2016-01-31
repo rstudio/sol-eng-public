@@ -5,7 +5,6 @@ library(fasttime)
 library(readr)
 
 infile <- "../../data/serverLoad.db"
-con <- dbConnect(SQLite(), infile)
 
 ui <- shinyUI(
   fluidPage(
@@ -16,6 +15,13 @@ ui <- shinyUI(
 
 server <- function(input, output, session) {
 
+  con <- dbConnect(SQLite(), infile)
+  
+  session$onSessionEnded(function() {
+    dbClearResult(dbListResults(con)[[1]])
+    dbDisconnect(con)
+    })
+  
   checkFunc <- function(){
     res <- dbSendQuery(con, "select max(id) from serverLoad")
     dbFetch(res)
@@ -35,7 +41,7 @@ server <- function(input, output, session) {
 
   allData <- reactive({
     pollData() %>%
-      do(tail(., 20)) %>%
+      do(tail(., 200)) %>%
       mutate(Date = fastPOSIXct(dte))
   })
   
@@ -46,7 +52,6 @@ server <- function(input, output, session) {
       ylab("Log10 Load") + 
       scale_y_log10()
   })
-  
   
 }
 

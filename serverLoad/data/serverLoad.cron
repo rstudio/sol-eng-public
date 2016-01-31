@@ -1,9 +1,17 @@
 
-MYDIR=/home/nathan/ShinyApps/serverLoad/data
-MYFILE=severLoad.sh
+MYDIR=/home/nathan/ShinyApps/sol-eng-public/serverLoad/data
+MYFILE=serverLoad.sh
 MYLOG=serverLoad.log
 
-* * * * * $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 5; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 10; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
 * * * * * sleep 15; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 20; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 25; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
 * * * * * sleep 30; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 35; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 40; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
 * * * * * sleep 45; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 50; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 55; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
+* * * * * sleep 60; $MYDIR/$MYFILE >> $MYDIR/$MYLOG 2>&1
