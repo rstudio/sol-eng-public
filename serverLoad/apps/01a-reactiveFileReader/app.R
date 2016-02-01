@@ -24,7 +24,7 @@ server <- function(input, output, session) {
   
   allData <- reactive({
     fileReaderData() %>%
-      do(tail(., 200)) %>%
+      do(tail(., 20)) %>%
       mutate(Date = fastPOSIXct(dte))
   })
   
