@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MYDIR=~/ShinyApps/sol-eng-public/serverLoad/data
+MYDIR=~/sol-eng-public/serverLoad/data
 FILENAME=serverLoad.txt
 TABLENAME=serverLoad
 
