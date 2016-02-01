@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MYDIR=~/sol-eng-public/serverLoad/data
+MYDIR=/home/nathan/sol-eng-public/serverLoad/data
 FILENAME=serverLoad.txt
 TABLENAME=serverLoad
 

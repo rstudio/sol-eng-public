@@ -1,6 +1,6 @@
 # Insert this code into your crontab on Linux by calling `crontab -e`
 
-MYDIR=~/sol-eng-public/serverLoad/data
+MYDIR=/home/nathan/sol-eng-public/serverLoad/data
 MYFILE=serverLoad.sh
 MYLOG=serverLoad.log
 
