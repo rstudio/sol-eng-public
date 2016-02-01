@@ -41,7 +41,7 @@ server <- function(input, output, session) {
 
   allData <- reactive({
     pollData() %>%
-      do(tail(., 200)) %>%
+      do(tail(., 20)) %>%
       mutate(Date = fastPOSIXct(dte))
   })
   
