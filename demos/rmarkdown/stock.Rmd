@@ -1,7 +1,7 @@
 ---
 output: html_document
 params:
-  symbol: IBM
+  symbol: TSLA
 ---
   
 ## `r params$symbol`

@@ -1,19 +1,21 @@
 ---
 output: html_document
+params:
+  symbol: GOOG
 ---
   
-## 'IBM'
+## `r params$symbol`
 
 ```{r, echo=FALSE, message=FALSE}
 
 library(quantmod)
 
-prices <- round(getSymbols("IBM", auto.assign = FALSE), 2)
+prices <- round(getSymbols(params$symbol, auto.assign = FALSE), 2)
 close <- Cl(last(prices))
 open <- Op(last(prices))
 ```
 
-The stock closed ? at ? dollars per share yesterday.
+The stock closed `r ifelse(close>open,'up','down')` at `r close` dollars per share yesterday.
 
 ## Price History
 
@@ -28,7 +30,12 @@ chartSeries(prices, theme = chartTheme("white", bg.col = "white"))
 
 The table below displays the daily price data for the stock. In the next section, we will learn how to make a concise, interactive table with the `DT` package, a new package for making searchable data tables. You can learn more about the `DT` package at the website 
 ***
-  
+```{r}
+library(dygraphs)
+dygraph(nhtemp, main = "New Haven Temperatures") %>% 
+  dyRangeSelector(dateWindow = c("1920-01-01", "1960-01-01"))
+```
+
 ```{r echo=FALSE}
 DT::datatable(data.frame(prices[, 1:4], 2))
 ```
