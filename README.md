@@ -1,4 +1,4 @@
-## RStudio Solutions-Engineering
+# RStudio Solutions-Engineering
 #### Demonstrations, Apps, and Topics
 
 This repository holds material useful to support RStudio Solutions Engineering.
