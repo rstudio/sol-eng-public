@@ -92,3 +92,10 @@ Integrate Shiny with existing HTML with HTML templates. Templates can be used to
 ![shinyappsio](img/Ambassador-Webinar-GrandTour.013.jpeg)
 
 ***
+
+## Shiny dev
+
+* [Modules](http://shiny.rstudio.com/articles/modules.html)
+* [Stack Error Traces](http://shiny.rstudio.com/articles/debugging.html)
+* [Profiler](http://rpubs.com/wch/123888)
+* [Shinydashboard](https://rstudio.github.io/shinydashboard/)
