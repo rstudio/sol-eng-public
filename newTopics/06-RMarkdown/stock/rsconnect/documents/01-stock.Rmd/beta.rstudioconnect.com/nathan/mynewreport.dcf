@@ -1,0 +1,9 @@
+name: mynewreport
+account: nathan
+server: beta.rstudioconnect.com
+appId: 642
+bundleId: 1114
+url: https://beta.rstudioconnect.com/nathan/mynewreport/
+when: 1458156099.74555
+asMultiple: FALSE
+asStatic: TRUE
