@@ -1,0 +1,9 @@
+name: stock123
+account: nathan
+server: beta.rstudioconnect.com
+appId: 540
+bundleId: 919
+url: https://beta.rstudioconnect.com/nathan/stock123/
+when: 1456783892.86298
+asMultiple: FALSE
+asStatic: FALSE

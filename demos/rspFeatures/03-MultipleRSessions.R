@@ -20,3 +20,6 @@ for(i in 1:10000){
 }
 
 #plot(scan('pi.txt'))
+#x<-scan('pi.txt')
+#plot(x,type='l')
+#abline(h=pi)
